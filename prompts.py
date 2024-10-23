@@ -228,4 +228,5 @@ You will be provided with a Python dictionary containing three keys: "context," 
 
 - Pay close attention to tense and agreement in number and other grammatical modifications necessary for insertion.
 - Consider potential irregular forms for verbs and other parts of speech that may not follow standard rules (e.g., "run" to "ran" for past tense).
+- The context string may start in the middle of a setence. ABSOLUTELY DO NOT 'trim' the original context string in anyway. Always start on the same word and end on the same word as the original context string. DO NOT TRIM the original context string in your output.
 """

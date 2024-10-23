@@ -1,8 +1,19 @@
 novel1 <- read.csv('sonsandlovers.csv')
 novel2 <- read.csv('therainbow.csv')
 novel3 <- read.csv('womeninlove.csv')
+novel4 <- read.csv('ladychatterly.csv')
 
-data <- rbind(novel1,novel2,novel3)
+#novel1 <- novel1 %>%
+#  filter(!is_outlier(!!sym('similarity')))
+#novel2 <- novel2 %>%
+#  filter(!is_outlier(!!sym('similarity')))
+#novel3 <- novel3 %>%
+#  filter(!is_outlier(!!sym('similarity')))
+#novel4 <- novel4 %>%
+#  filter(!is_outlier(!!sym('similarity')))
+
+
+data <- rbind(novel1,novel2,novel3, novel4)
 
 library(tidyverse)
 library(RColorBrewer)
@@ -15,7 +26,11 @@ ggplot(data = data, aes(x = book, y = similarity)) +
   stat_summary(fun.y = mean, geom = "point", shape = 21, size = 2, colour = 'darkblue') +
   geom_boxplot(width = 0.1)
 
+hist(log(novel4$similarity), breaks = 20)
 
 t.test(novel1$similarity, novel2$similarity)
 t.test(novel2$similarity, novel3$similarity)
 t.test(novel1$similarity, novel3$similarity)
+t.test(novel4$similarity, novel1$similarity)
+t.test(novel4$similarity, novel2$similarity)
+t.test(novel4$similarity, novel3$similarity)

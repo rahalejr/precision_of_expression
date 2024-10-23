@@ -73,13 +73,16 @@ def process(author = 'lawrence'):
                             word_similarity.append(cosim(word_str, syn))
                             sentences.append(' '.join(substituted))
                         else:
-                            substituted = realization(word_str, syn, context_str, pos)
+                            try:
+                                substituted = realization(word_str, syn, context_str, pos)
+                            except ValueError:
+                                continue
                             sentences.append(substituted)
                             substitutions.append(cosim(substituted, context_str))
                             word_similarity.append(cosim(lemmatized, syn))
                             
-
-
+                    if len(sentences) == 0:
+                        continue
                     best_fit = substitutions.index(max(substitutions))
 
                     row =   {'word': word_str, 'part_of_speech': pos_expand[pos], 'frequency': freq(word_str, pos), 
