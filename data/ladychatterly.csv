@@ -1,0 +1,5 @@
+word,part_of_speech,frequency,similarity,synonym,syn_sim,author,age,book,year,sentence,modified,sentence_type
+cataclysm,noun,4.37e-07,0.9749175877329411,disaster,0.8739019806381355,D.H. Lawrence,43,Lady Chatterly's Lover,1928,"to take it tragically. The cataclysm has happened, we are among","to take it tragically. The disaster has happened, we are among",Metaphor?
+scramble,verb,2.45e-06,0.9825881894760959,climb,0.8280637164636026,D.H. Lawrence,43,Lady Chatterly's Lover,1928,"but we go round, or scramble over the obstacles. We've got","but we go round, or climb over the obstacles. We've got",Metaphor?
+marvellous,adjective,2.51e-06,0.9837722964862883,wonderful,0.9229202523619927,D.H. Lawrence,43,Lady Chatterly's Lover,1928,"His hold on life was marvellous. He didn't die, and the","His hold on life was wonderful. He didn't die, and the",Metaphor?
+forlorn,adjective,6.76e-07,0.9858703452037608,lonely,0.9100739427469148,D.H. Lawrence,43,Lady Chatterly's Lover,1928,married life in the rather forlorn home of the Chatterleys on,married life in the rather lonely home of the Chatterleys on,Metaphor?
