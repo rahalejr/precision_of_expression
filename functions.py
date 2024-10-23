@@ -45,18 +45,18 @@ def lemmatize(word, pos):
 
 def infrequent(word, pos=None):
     # requires lesk_pos
-    word = lemmatize(word, pos) if pos else word
+    # word = lemmatize(word, pos) if pos else word
     return word_frequency(word, 'en') < parameters['freq_threshold']
 
 def frequent(word, pos=None):
     # requires lesk_pos
-    word = lemmatize(word, pos) if pos else word
+    # word = lemmatize(word, pos) if pos else word
     return word_frequency(word, 'en') > parameters['syn_threshold']
 
 def freq(word, pos):
     # requires lesk_pos
-    lemmatized = lemmatize(word, pos)
-    return word_frequency(lemmatized, 'en')
+    # word = lemmatize(word, pos)
+    return word_frequency(word, 'en')
 
 
 def usable(word, sentence):
@@ -94,8 +94,8 @@ def remove_punctuation(word):
 
 class Word:
 
-    def __init__(self, word, sentence, llm=False, pos=None, lemmatized=None):
-        self.word = lemmatized if llm else word
+    def __init__(self, word, sentence, llm=False, pos=None):
+        self.word = word
         self.frequency =  word_frequency(self.word.lower(), 'en')
         self.sentence = sentence
         context = word_tokenize(sentence)
@@ -110,7 +110,6 @@ class Word:
         
         self.definitions = self.possible_forms()
         self.match = self.closest_match()
-        print('here')
 
     def possible_forms(self):
         definitions = []
