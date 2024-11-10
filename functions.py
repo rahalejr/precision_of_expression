@@ -1,4 +1,6 @@
 from tenacity import retry, stop_after_attempt, wait_fixed
+from transformers import BertModel, BertTokenizer
+import torch
 from llm_functions import correct_def, realization
 from parameters import parameters, pos_expand
 from secret import thesaurus, openai_key
@@ -16,6 +18,9 @@ from nltk.corpus import words, wordnet
 from nltk.wsd import lesk
 import nltk
 
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertModel.from_pretrained('bert-base-uncased')
+
 lemmatizer = WordNetLemmatizer().lemmatize
 nlp = spacy.load("en_core_web_sm")
 
@@ -23,6 +28,8 @@ openai.api_key = openai_key
 
 
 def format_text(text):
+    text = text.replace('_','')
+    text = text.replace ('--', ',')
     paragraphs = [p.replace('\n', ' ') for p in text.split('\n\n')]
     return [p.replace('  ', ' ') for p in paragraphs]
 
@@ -53,7 +60,7 @@ def frequent(word, pos=None):
     # word = lemmatize(word, pos) if pos else word
     return word_frequency(word, 'en') > parameters['syn_threshold']
 
-def freq(word, pos):
+def freq(word, pos=None):
     # requires lesk_pos
     # word = lemmatize(word, pos)
     return word_frequency(word, 'en')
@@ -70,11 +77,26 @@ def get_embedding(text, model="text-embedding-ada-002"):
     return openai.Embedding.create(input = [text], model=model)['data'][0]['embedding']
 
 
-def cosim(str1, str2):
-    a = get_embedding(str1)
-    b = get_embedding(str2)
-    return dot(a,b) / (norm(a)*norm(b))
+def cosim(embed1, embed2):
+    return torch.nn.functional.cosine_similarity(torch.tensor(embed1), torch.tensor(embed2), dim=0)
 
+
+def word_embed(word, sentence=None):
+    if not sentence:
+        sentence = word
+    input_ids = torch.tensor(tokenizer.encode(sentence)).unsqueeze(0)
+    outputs = model(input_ids)
+    last_hidden_states = outputs[0]
+    tokenized_sentence = tokenizer.tokenize(sentence)
+    token_index = tokenized_sentence.index(word)
+    word_embedding = last_hidden_states[0][token_index]
+    return word_embedding
+
+def compare_contexts(word, syn, context1=None, context2=None):
+    word_embedded = word_embed(word, context1)
+    syn_embedded = word_embed(syn, context2)
+
+    return cosim(word_embedded, syn_embedded)
 
 def window(i, n):
     length = parameters['window']

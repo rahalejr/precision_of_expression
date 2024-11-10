@@ -177,7 +177,7 @@ JUST RETURN AN INTEGER FOR THE CORRECT DEFINITION, I SWEAR TO GOD, MAN.
 realization_prompt = """
 Adjust a word to fit contextually within a sentence fragment.
 
-You will be provided with a Python dictionary containing three keys: "context," "word," and "pos". The "context" key contains a string with a placeholder specified as {word}. The "word" key contains a lemmatized word string, and the "pos" key specifies the part of speech for that word. Your task is to adjust the word according to its part of speech to fit correctly within the context string, insert the appropriately modified word into the placeholder, and return the string. If the word in its base form already fits the grammatical constraints of the context, then simply insert it into the string without modifying.
+You will be provided with a Python dictionary containing three keys: "context," "word," and "pos". The "context" key contains a string with a placeholder specified as {word}. The "word" key contains a lemmatized word string, and the "pos" key specifies the part of speech for that word. Your task is to adjust the word according to its part of speech to fit correctly within the context string, insert the appropriately modified word into the placeholder, and return a python dictionary with the lemmatized word and the new context string. If the word in its base form already fits the grammatical constraints of the context, then simply insert it into the string without modifying.
 
 # Steps
 
@@ -188,12 +188,12 @@ You will be provided with a Python dictionary containing three keys: "context," 
 2. **Compose the New String:**
    - Insert the adjusted word into the placeholder in the original string.
 
-3. **Return the New String:**
-   - Ensure the sentence maintains proper grammatical structure and return it as a string.
+3. **Return the Lemmatized Word and the New Context String:**
+   - Ensure the new context string maintains proper grammatical structure and return a python dictionary with the following key value pairs: "lemmatized": the word as it is in the new context string, and "new_context": the new context string.
 
 # Output Format
 
-- The original string with the modified word inserted.
+- A python dictionary with the following key value pairs: "lemmatized": the word as it is in the new context string, and "new_context": the new context string.
 
 # Examples
 
@@ -208,7 +208,10 @@ You will be provided with a Python dictionary containing three keys: "context," 
   }
   
 - Output: 
-  "we refuse to take it tragically. The cataclysm has happened, we"
+{
+  "lemmatized": "tragically",
+  "new_context": "we refuse to take it tragically. The cataclysm has happened, we"
+}
 
 **Example 2:**
 
@@ -221,12 +224,15 @@ You will be provided with a Python dictionary containing three keys: "context," 
   }
   
 
-- Output: 
-"war came, and they were hurried home. Neither was ever",  
+- Output:
+{
+  "lemmatized": "hurried",
+  "new_context": "war came, and they were hurried home. Neither was ever"
+}  
 
 # Notes
 
 - Pay close attention to tense and agreement in number and other grammatical modifications necessary for insertion.
 - Consider potential irregular forms for verbs and other parts of speech that may not follow standard rules (e.g., "run" to "ran" for past tense).
-- The context string may start in the middle of a setence. ABSOLUTELY DO NOT 'trim' the original context string in anyway. Always start on the same word and end on the same word as the original context string. DO NOT TRIM the original context string in your output.
+- The context string may start in the middle of a setence. ABSOLUTELY DO NOT 'trim' the original context string in any way. Always start on the same word and end on the same word as the original context string when creating 'new_context'. DO NOT TRIM the original context string in your output.
 """

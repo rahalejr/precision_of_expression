@@ -102,13 +102,18 @@ def realization(word, syn, context, pos):
             output = format_output(output)
             replaced = eval(output)
 
-            if syn in replaced:
-                syn_length = len(syn.split()) - 1
-            else:
-                syn_length = len([i for i in replaced.lower().split() if i not in context.lower().split()]) - 1
-            if len(context.split()) + syn_length != len(replaced.split()):
+            context_str = replaced['new_context']
+            lemmatized = replaced['lemmatized']
+
+            if lemmatized not in context_str:
                 continue
-            if type(replaced) == str:
+            else:
+                syn_length = len(lemmatized.split()) - 1
+            if syn_length > 0:
+                return 'too long'
+            if len(context.split()) + syn_length != len(context_str.split()):
+                continue
+            if type(replaced) == dict:
                 return replaced
         except:
             continue
